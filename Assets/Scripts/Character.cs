@@ -3,7 +3,9 @@ using UnityEngine.UI;
 
 /// <summary>
 /// A character is a collection of 4 parts that can be switched out. Each part has X number of sprites that can be switched between.
+/// I've made everything public instead of serializing it because I'm lazy and this is just a demo.
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class Character : MonoBehaviour
 {
     [Header("Controls")] public KeyCode SwitchA;
@@ -22,9 +24,15 @@ public class Character : MonoBehaviour
 
     private readonly int[] _indexes = {0, 0, 0, 0};
 
+    [SerializeField] private AudioClip _switchSound;
+    private AudioSource _audioSource;
+
     private void Start()
     {
         UpdatePositions(); // default will always be 0000
+
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.clip = _switchSound;
     }
 
     private void Update()
@@ -42,6 +50,9 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(SwitchD))
             _indexes[3] = (_indexes[3] + 1) % PartD.Length;
 
+        _audioSource.time = 0;
+        _audioSource.Play();
+        
         UpdatePositions();
 
         Debug.Log($"{name}: {GetCombination()}");
