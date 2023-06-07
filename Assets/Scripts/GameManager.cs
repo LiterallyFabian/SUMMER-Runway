@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio")] [SerializeField] private AudioClip _correctSound;
 
+    [SerializeField] private GameObject _parentUI;
+    [SerializeField] private GameObject _parentGame;
+    [SerializeField] private GameObject _parentIntro;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +39,10 @@ public class GameManager : MonoBehaviour
 
         _players = FindObjectsOfType<Character>();
         SetNextPose();
+
+        _parentGame.SetActive(false);
+        _parentUI.SetActive(false);
+        _parentIntro.SetActive(true);
     }
 
     public bool CheckCombination(Character character, int combination)
@@ -64,5 +72,12 @@ public class GameManager : MonoBehaviour
         _poseIndex = (_poseIndex + 1) % _poses.Length;
 
         _frame.sprite = _currentPose.Reference;
+    }
+
+    public void StartGame()
+    {
+        _parentGame.SetActive(true);
+        _parentUI.SetActive(true);
+        _parentIntro.SetActive(false);
     }
 }
