@@ -50,7 +50,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         if ((Input.GetKeyDown(SwitchA) || Input.GetKeyDown(SwitchB) || Input.GetKeyDown(SwitchC) ||
-             Input.GetKeyDown(SwitchD) || Input.GetKeyDown(SwitchCamera)) == false)
+             Input.GetKeyDown(SwitchD) || (Input.GetKeyDown(SwitchCamera) && Application.isEditor)) == false)
             return; // early return if no key was pressed
 
         if (!_gameManager || _gameManager.PlayingAnimation)
@@ -64,7 +64,7 @@ public class Character : MonoBehaviour
             _indexes[2] = (_indexes[2] + 1) % PartC.Length;
         if (Input.GetKeyDown(SwitchD))
             _indexes[3] = (_indexes[3] + 1) % PartD.Length;
-        if (Input.GetKeyDown(SwitchCamera) && Application.isEditor)
+        if (Input.GetKeyDown(SwitchCamera))
             StartCoroutine(PlayCameraFlashes());
 
         _audioSource.time = 0;
