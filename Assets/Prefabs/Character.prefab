@@ -304,6 +304,12 @@ MonoBehaviour:
   ImageC: {fileID: 814034123984593633}
   ImageD: {fileID: 814034125761713817}
   _switchSound: {fileID: 8300000, guid: 0ff08f309e0de604a9f0d02325ab0230, type: 3}
+  _cameraFlashSounds:
+  - {fileID: 8300000, guid: b2339396388205c429ca829bba3c49bf, type: 3}
+  - {fileID: 8300000, guid: 1df9e267d0051b344a4e6295fc5a55ab, type: 3}
+  - {fileID: 8300000, guid: ab7e4363a7091e6429e3c22ab078de7d, type: 3}
+  - {fileID: 8300000, guid: d5ae56da09bbaf043828177056baba9c, type: 3}
+  - {fileID: 8300000, guid: ba099184ccf56884abc8b929cfb5a759, type: 3}
 --- !u!82 &5783027564145275484
 AudioSource:
   m_ObjectHideFlags: 0

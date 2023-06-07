@@ -215,11 +215,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 814034124650300449, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: SwitchC
-      value: 107
+      value: 108
       objectReference: {fileID: 0}
     - target: {fileID: 814034124650300449, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: SwitchD
-      value: 108
+      value: 107
       objectReference: {fileID: 0}
     - target: {fileID: 814034124650300454, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: m_Pivot.x

@@ -40,9 +40,12 @@ public class GameManager : MonoBehaviour
         _players = FindObjectsOfType<Character>();
         SetNextPose();
 
-        _parentGame.SetActive(false);
-        _parentUI.SetActive(false);
-        _parentIntro.SetActive(true);
+        if (!Application.isEditor)
+        {
+            _parentGame.SetActive(false);
+            _parentUI.SetActive(false);
+            _parentIntro.SetActive(true);
+        }
     }
 
     public bool CheckCombination(Character character, int combination)

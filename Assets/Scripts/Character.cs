@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,7 @@ public class Character : MonoBehaviour
     private readonly int[] _indexes = {0, 0, 0, 0};
 
     [SerializeField] private AudioClip _switchSound;
+    [SerializeField] private AudioClip[] _cameraFlashSounds;
     private AudioSource _audioSource;
     private GameManager _gameManager;
 
@@ -54,7 +56,7 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(SwitchC))
             _indexes[2] = (_indexes[2] + 1) % PartC.Length;
         if (Input.GetKeyDown(SwitchD))
-            _indexes[3] = (_indexes[3] + 1) % PartD.Length;
+            StartCoroutine(PlayCameraFlashes());
 
         _audioSource.time = 0;
         _audioSource.Play();
@@ -73,5 +75,50 @@ public class Character : MonoBehaviour
         ImageB.sprite = PartB[_indexes[1]];
         ImageC.sprite = PartC[_indexes[2]];
         ImageD.sprite = PartD[_indexes[3]];
+    }
+
+    public IEnumerator PlayCameraFlashes()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject flash = PlayCameraFlash();
+            Destroy(flash, Random.Range(0.2f, 0.3f));
+
+            // create a new temporary audio source
+            AudioSource audioSource = flash.AddComponent<AudioSource>();
+            audioSource.clip = _cameraFlashSounds[Random.Range(0, _cameraFlashSounds.Length)];
+            audioSource.Play();
+            Destroy(audioSource, audioSource.clip.length);
+            yield return new WaitForSeconds(Random.Range(0.06f, 0.2f));
+        }
+    }
+
+    public GameObject PlayCameraFlash()
+    {
+        GameObject flash = CreateClone();
+        flash.name = $"{name} (flash)";
+
+        // move it behind the original
+        flash.transform.SetSiblingIndex(0);
+
+        // make all images black
+        foreach (Image image in flash.GetComponentsInChildren<Image>())
+        {
+            image.color = new Color(0, 0, 0, 0.4f);
+        }
+
+        // move X & Y up by 5-20 units each
+        flash.transform.Translate(Random.Range(-50, 50), Random.Range(2, 20), 0);
+
+        return flash;
+    }
+
+    private GameObject CreateClone()
+    {
+        Transform t = transform;
+        GameObject clone = Instantiate(gameObject, t.position, t.rotation);
+        Destroy(clone.GetComponent<Character>());
+        clone.transform.SetParent(t.parent);
+        return clone;
     }
 }
