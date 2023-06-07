@@ -311,6 +311,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ab7e4363a7091e6429e3c22ab078de7d, type: 3}
   - {fileID: 8300000, guid: d5ae56da09bbaf043828177056baba9c, type: 3}
   - {fileID: 8300000, guid: ba099184ccf56884abc8b929cfb5a759, type: 3}
+  _scoreText: {fileID: 0}
+  _polaroidPrefab: {fileID: 4308138833568913760, guid: 7e58455cd9f02f247bfd71217f990a35, type: 3}
+  _powerfulCamera: {fileID: 8300000, guid: 2a433a5319268f349b8b1323546a897e, type: 3}
 --- !u!82 &5783027564145275484
 AudioSource:
   m_ObjectHideFlags: 0

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _parentGame;
     [SerializeField] private GameObject _parentIntro;
     
+    public bool PlayingAnimation { get; set; } = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -67,11 +69,9 @@ public class GameManager : MonoBehaviour
         _audioSource.Play();
 
         StartCoroutine(character.PlayCameraFlashes());
-
-        SetNextPose();
     }
 
-    private void SetNextPose()
+    public void SetNextPose()
     {
         _currentPose = _poses[_poseIndex];
         _poseIndex = (_poseIndex + 1) % _poses.Length;

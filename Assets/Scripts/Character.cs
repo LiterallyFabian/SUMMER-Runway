@@ -31,6 +31,8 @@ public class Character : MonoBehaviour
     private AudioSource _audioSource;
     private GameManager _gameManager;
     [SerializeField] private Text _scoreText;
+    [SerializeField] private GameObject _polaroidPrefab;
+    [SerializeField] private AudioClip _powerfulCamera;
 
     public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
 
@@ -50,6 +52,9 @@ public class Character : MonoBehaviour
         if ((Input.GetKeyDown(SwitchA) || Input.GetKeyDown(SwitchB) || Input.GetKeyDown(SwitchC) ||
              Input.GetKeyDown(SwitchD) || Input.GetKeyDown(SwitchCamera)) == false)
             return; // early return if no key was pressed
+
+        if (!_gameManager || _gameManager.PlayingAnimation)
+            return;
 
         if (Input.GetKeyDown(SwitchA))
             _indexes[0] = (_indexes[0] + 1) % PartA.Length;
@@ -85,6 +90,10 @@ public class Character : MonoBehaviour
 
     public IEnumerator PlayCameraFlashes()
     {
+        _gameManager.PlayingAnimation = true;
+
+        CreatePolaroid();
+
         for (int i = 0; i < 10; i++)
         {
             GameObject flash = PlayCameraFlash();
@@ -97,6 +106,10 @@ public class Character : MonoBehaviour
             Destroy(audioSource, audioSource.clip.length);
             yield return new WaitForSeconds(Random.Range(0.06f, 0.2f));
         }
+        
+        _gameManager.SetNextPose();
+
+        _gameManager.PlayingAnimation = false;
     }
 
     public GameObject PlayCameraFlash()
@@ -117,6 +130,21 @@ public class Character : MonoBehaviour
         flash.transform.Translate(Random.Range(-50, 50), Random.Range(2, 20), 0);
 
         return flash;
+    }
+
+    public void CreatePolaroid()
+    {
+        GameObject polaroid = Instantiate(_polaroidPrefab, GameObject.Find("Canvas/UI").transform, false);
+        GameObject clone = CreateClone();
+        GameObject polaroidCharacter = polaroid.transform.Find("Character").gameObject;
+        clone.transform.SetParent(polaroidCharacter.transform);
+        clone.transform.localPosition = polaroidCharacter.transform.localPosition;
+        clone.transform.localRotation = polaroidCharacter.transform.localRotation;
+        clone.transform.localScale = Vector3.one;
+        
+        AudioSource audioSource = polaroid.AddComponent<AudioSource>();
+        audioSource.clip = _powerfulCamera;
+        audioSource.Play();
     }
 
     private GameObject CreateClone()
