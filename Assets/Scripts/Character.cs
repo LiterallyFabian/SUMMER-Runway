@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     public KeyCode SwitchB;
     public KeyCode SwitchC;
     public KeyCode SwitchD;
+    public KeyCode SwitchCamera;
 
     [Header("Character parts")] public Sprite[] PartA;
     public Sprite[] PartB;
@@ -29,6 +30,7 @@ public class Character : MonoBehaviour
     [SerializeField] private AudioClip[] _cameraFlashSounds;
     private AudioSource _audioSource;
     private GameManager _gameManager;
+    [SerializeField] private Text _scoreText;
 
     public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
 
@@ -46,7 +48,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         if ((Input.GetKeyDown(SwitchA) || Input.GetKeyDown(SwitchB) || Input.GetKeyDown(SwitchC) ||
-             Input.GetKeyDown(SwitchD)) == false)
+             Input.GetKeyDown(SwitchD) || Input.GetKeyDown(SwitchCamera)) == false)
             return; // early return if no key was pressed
 
         if (Input.GetKeyDown(SwitchA))
@@ -56,6 +58,8 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(SwitchC))
             _indexes[2] = (_indexes[2] + 1) % PartC.Length;
         if (Input.GetKeyDown(SwitchD))
+            _indexes[3] = (_indexes[3] + 1) % PartD.Length;
+        if (Input.GetKeyDown(SwitchCamera) && Application.isEditor)
             StartCoroutine(PlayCameraFlashes());
 
         _audioSource.time = 0;
@@ -65,6 +69,8 @@ public class Character : MonoBehaviour
 
         if (_gameManager != null)
             _gameManager.CheckCombination(this, Combination);
+
+        _scoreText.text = Score.ToString();
 
         Debug.Log($"{name}: {Combination}");
     }

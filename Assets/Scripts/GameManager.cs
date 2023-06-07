@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _parentUI;
     [SerializeField] private GameObject _parentGame;
     [SerializeField] private GameObject _parentIntro;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
 
         _audioSource.time = 0;
         _audioSource.Play();
+
+        StartCoroutine(character.PlayCameraFlashes());
 
         SetNextPose();
     }
