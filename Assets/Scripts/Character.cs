@@ -26,6 +26,11 @@ public class Character : MonoBehaviour
 
     [SerializeField] private AudioClip _switchSound;
     private AudioSource _audioSource;
+    private GameManager _gameManager;
+
+    public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
+
+    public int Score { get; set; } = 0;
 
     private void Start()
     {
@@ -33,6 +38,7 @@ public class Character : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _switchSound;
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -52,10 +58,13 @@ public class Character : MonoBehaviour
 
         _audioSource.time = 0;
         _audioSource.Play();
-        
+
         UpdatePositions();
 
-        Debug.Log($"{name}: {GetCombination()}");
+        if (_gameManager != null)
+            _gameManager.CheckCombination(this, Combination);
+
+        Debug.Log($"{name}: {Combination}");
     }
 
     private void UpdatePositions()
@@ -64,10 +73,5 @@ public class Character : MonoBehaviour
         ImageB.sprite = PartB[_indexes[1]];
         ImageC.sprite = PartC[_indexes[2]];
         ImageD.sprite = PartD[_indexes[3]];
-    }
-
-    public int GetCombination()
-    {
-        return _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
     }
 }
