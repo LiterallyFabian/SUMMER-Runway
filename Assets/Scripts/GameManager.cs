@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text _winText;
     [SerializeField] private Text _statText;
 
+    [SerializeField] private AudioLowPassFilter _lowpassFilter;
     public bool PlayingAnimation { get; set; } = false;
 
     // Start is called before the first frame update
@@ -153,6 +155,8 @@ public class GameManager : MonoBehaviour
         _parentVictory.SetActive(false);
 
         _gameStarted = true;
+
+        Destroy(_lowpassFilter);
     }
 
     private IEnumerator Win()
@@ -179,11 +183,11 @@ public class GameManager : MonoBehaviour
                 _winText.text = $"CONGRATS P{i + 1}, YOU ARE TRENDY";
             }
 
-            statText += $"P{i+1}: {c.Score}\n";
+            statText += $"P{i + 1}: {c.Score}\n";
         }
 
         _statText.text = statText;
-        
+
         GameObject clone = mostScore.CreateClone();
         clone.transform.localScale = Vector3.one;
         clone.transform.SetParent(_parentVictory.transform);
