@@ -24,6 +24,13 @@ public class Character : MonoBehaviour
     public Image ImageC;
     public Image ImageD;
 
+    [Header("Particle systems")] public ParticleSystem ParticleLike;
+    public ParticleSystem ParticleLove;
+    public ParticleSystem ParticleWow;
+    public ParticleSystem ParticleHaha;
+    public ParticleSystem ParticleSad;
+    public ParticleSystem ParticleAngry;
+
     private readonly int[] _indexes = {0, 0, 0, 0};
 
     [SerializeField] private AudioClip _switchSound;
@@ -33,6 +40,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Text _scoreText;
     [SerializeField] private GameObject _polaroidPrefab;
     [SerializeField] private AudioClip _powerfulCamera;
+
 
     public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
 
@@ -45,6 +53,17 @@ public class Character : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _audioSource.clip = _switchSound;
         _gameManager = FindObjectOfType<GameManager>();
+
+        if (!name.Contains("clone"))
+        {
+            // this is the original character, start all particles
+            ParticleLike.Play();
+            ParticleLove.Play();
+            ParticleWow.Play();
+            ParticleHaha.Play();
+            ParticleSad.Play();
+            ParticleAngry.Play();
+        }
     }
 
     private void Update()
@@ -93,6 +112,8 @@ public class Character : MonoBehaviour
         _gameManager.PlayingAnimation = true;
 
         CreatePolaroid();
+
+        StartCoroutine(PositiveReactions());
 
         for (int i = 0; i < 10; i++)
         {
@@ -151,8 +172,25 @@ public class Character : MonoBehaviour
     {
         Transform t = transform;
         GameObject clone = Instantiate(gameObject, t.position, t.rotation);
+        clone.name = name + " (clone)";
+
         Destroy(clone.GetComponent<Character>());
+
         clone.transform.SetParent(t.parent);
         return clone;
+    }
+
+    public IEnumerator PositiveReactions()
+    {
+        // burst all positive reactions
+
+        for (int i = 0; i < Random.Range(15, 20); i++)
+        {
+            ParticleLike.Emit(Random.Range(1, 3));
+            ParticleLove.Emit(Random.Range(1, 3));
+            ParticleWow.Emit(Random.Range(1, 2));
+            ParticleHaha.Emit(1);
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
+        }
     }
 }
