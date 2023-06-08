@@ -106,8 +106,6 @@ public class Character : MonoBehaviour
         if (_gameManager != null)
             _gameManager.CheckCombination(this, Combination);
 
-        _scoreText.text = Score.ToString();
-
         Debug.Log($"{name}: {Combination}");
     }
 
