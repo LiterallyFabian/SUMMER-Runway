@@ -63,8 +63,7 @@ public class GameManager : MonoBehaviour
 
     private void Score(Character character)
     {
-        character.Score++;
-        Debug.Log($"{character.name} scored! Score: {character.Score}");
+        Debug.Log($"{character.name} posed! Score: {character.Score}");
 
         _audioSource.time = 0;
         _audioSource.Play();

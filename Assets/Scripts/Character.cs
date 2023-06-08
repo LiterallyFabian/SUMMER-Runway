@@ -41,6 +41,9 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject _polaroidPrefab;
     [SerializeField] private AudioClip _powerfulCamera;
 
+    private float _followerMultiplier = 0.1f;
+    private float _secondsBetweenFollowerUpdates = 0.1f;
+
 
     public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
 
@@ -68,6 +71,15 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
+        // update follower count
+        if (Time.time > _secondsBetweenFollowerUpdates)
+        {
+            _secondsBetweenFollowerUpdates = Time.time + 0.1f;
+            _scoreText.text = $"Followers: {Score}";
+
+            Score += Mathf.RoundToInt(Random.Range(0, 10) * _followerMultiplier);
+        }
+
         if ((Input.GetKeyDown(SwitchA) || Input.GetKeyDown(SwitchB) || Input.GetKeyDown(SwitchC) ||
              Input.GetKeyDown(SwitchD) || (Input.GetKeyDown(SwitchCamera) && Application.isEditor)) == false)
             return; // early return if no key was pressed
@@ -185,15 +197,19 @@ public class Character : MonoBehaviour
 
     public IEnumerator PositiveReactions()
     {
-        // burst all positive reactions
-
+        float originalFollowerMultiplier = _followerMultiplier;
+        _followerMultiplier = 1f;
+        
         for (int i = 0; i < Random.Range(15, 20); i++)
         {
             ParticleLike.Emit(Random.Range(1, 3));
             ParticleLove.Emit(Random.Range(1, 3));
             ParticleWow.Emit(Random.Range(1, 2));
             ParticleHaha.Emit(1);
+
             yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
         }
+
+        _followerMultiplier = originalFollowerMultiplier;
     }
 }
