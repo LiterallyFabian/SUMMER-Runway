@@ -181,7 +181,7 @@ public class Character : MonoBehaviour
         audioSource.Play();
     }
 
-    private GameObject CreateClone()
+    public GameObject CreateClone()
     {
         Transform t = transform;
         GameObject clone = Instantiate(gameObject, t.position, t.rotation);
