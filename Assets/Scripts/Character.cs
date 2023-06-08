@@ -199,13 +199,29 @@ public class Character : MonoBehaviour
     {
         float originalFollowerMultiplier = _followerMultiplier;
         _followerMultiplier = 1f;
-        
+
         for (int i = 0; i < Random.Range(15, 20); i++)
         {
             ParticleLike.Emit(Random.Range(1, 3));
             ParticleLove.Emit(Random.Range(1, 3));
             ParticleWow.Emit(Random.Range(1, 2));
             ParticleHaha.Emit(1);
+
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
+        }
+
+        _followerMultiplier = originalFollowerMultiplier;
+    }
+
+    public IEnumerator NegativeReactions()
+    {
+        float originalFollowerMultiplier = _followerMultiplier;
+        _followerMultiplier = -0.1f;
+
+        for (int i = 0; i < Random.Range(15, 20); i++)
+        {
+            ParticleSad.Emit(Random.Range(1, 3));
+            ParticleAngry.Emit(Random.Range(1, 3));
 
             yield return new WaitForSeconds(Random.Range(0.05f, 0.2f));
         }

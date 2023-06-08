@@ -69,6 +69,15 @@ public class GameManager : MonoBehaviour
         _audioSource.Play();
 
         StartCoroutine(character.PlayCameraFlashes());
+        
+        // start NegativeReactions for the other players
+        foreach (Character player in _players)
+        {
+            if (player == character)
+                continue;
+
+            StartCoroutine(player.NegativeReactions());
+        }
     }
 
     public void SetNextPose()
