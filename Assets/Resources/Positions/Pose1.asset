@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbbb919f957ac24a9bd5d3ff9bbf208, type: 3}
   m_Name: Pose1
   m_EditorClassIdentifier: 
-  Code: 1201
+  Code: 3442
   Reference: {fileID: 21300000, guid: cb97fc1e55104044a82b6515a95f64ec, type: 3}

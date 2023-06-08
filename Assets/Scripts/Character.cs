@@ -106,7 +106,7 @@ public class Character : MonoBehaviour
             Destroy(audioSource, audioSource.clip.length);
             yield return new WaitForSeconds(Random.Range(0.06f, 0.2f));
         }
-        
+
         _gameManager.SetNextPose();
 
         _gameManager.PlayingAnimation = false;
@@ -141,7 +141,7 @@ public class Character : MonoBehaviour
         clone.transform.localPosition = polaroidCharacter.transform.localPosition;
         clone.transform.localRotation = polaroidCharacter.transform.localRotation;
         clone.transform.localScale = Vector3.one;
-        
+
         AudioSource audioSource = polaroid.AddComponent<AudioSource>();
         audioSource.clip = _powerfulCamera;
         audioSource.Play();

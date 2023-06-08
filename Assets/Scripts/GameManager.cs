@@ -8,19 +8,24 @@ public class GameManager : MonoBehaviour
     private Pose _currentPose;
     private int _poseIndex = 0;
 
+
     private Character[] _players;
     private AudioSource _audioSource;
 
     [SerializeField] private Image _frame;
+    [SerializeField] private Image _feedImage;
+    [SerializeField] private Sprite[] _instagramFeeds;
+    private int _instagramFeedIndex = 0;
 
     [Header("Audio")] [SerializeField] private AudioClip _correctSound;
 
     [SerializeField] private GameObject _parentUI;
     [SerializeField] private GameObject _parentGame;
     [SerializeField] private GameObject _parentIntro;
-    
+
+
     public bool PlayingAnimation { get; set; } = false;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,14 +35,10 @@ public class GameManager : MonoBehaviour
         _poses = Resources.LoadAll<Pose>("Positions");
         Debug.Log($"Loaded {_poses.Length} poses.");
 
-        // scramble the poses
-        for (int i = 0; i < _poses.Length; i++)
-        {
-            Pose temp = _poses[i];
-            int randomIndex = Random.Range(i, _poses.Length);
-            _poses[i] = _poses[randomIndex];
-            _poses[randomIndex] = temp;
-        }
+
+        System.Random random = new System.Random();
+        random.Shuffle(_poses);
+        random.Shuffle(_instagramFeeds);
 
         _players = FindObjectsOfType<Character>();
         SetNextPose();
@@ -75,8 +76,10 @@ public class GameManager : MonoBehaviour
     {
         _currentPose = _poses[_poseIndex];
         _poseIndex = (_poseIndex + 1) % _poses.Length;
-
         _frame.sprite = _currentPose.Reference;
+
+        _feedImage.sprite = _instagramFeeds[_instagramFeedIndex];
+        _instagramFeedIndex = (_instagramFeedIndex + 1) % _instagramFeeds.Length;
     }
 
     public void StartGame()
