@@ -141,14 +141,17 @@ public class Character : MonoBehaviour
         // move it behind the original
         flash.transform.SetSiblingIndex(0);
 
+        flash.transform.localScale = Vector3.one;
+
         // make all images black
         foreach (Image image in flash.GetComponentsInChildren<Image>())
         {
             image.color = new Color(0, 0, 0, 0.4f);
         }
 
-        // move X & Y up by 5-20 units each
-        flash.transform.Translate(Random.Range(-50, 50), Random.Range(2, 20), 0);
+        // move X & Y around by a few units each
+        Vector3 forward = new Vector2(Random.Range(-50, 50), Random.Range(2, 20));
+        flash.transform.localPosition += forward;
 
         return flash;
     }
