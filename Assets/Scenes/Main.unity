@@ -828,6 +828,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1706696757}
     - target: {fileID: 814034124650300449, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
+      propertyPath: JoystickNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 814034124650300449, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: SwitchCamera
       value: 111
       objectReference: {fileID: 0}
@@ -1856,7 +1860,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 279, y: 145.54}
+  m_AnchoredPosition: {x: 279, y: 145.53998}
   m_SizeDelta: {x: 207.14, y: 145.54}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &857464089
@@ -3931,7 +3935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 814034124650300454, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 164.9
+      value: 164.90002
       objectReference: {fileID: 0}
     - target: {fileID: 814034124650300454, guid: f19bb6cd85f8fb447a9a6e65b9b683ef, type: 3}
       propertyPath: m_AnchoredPosition.y

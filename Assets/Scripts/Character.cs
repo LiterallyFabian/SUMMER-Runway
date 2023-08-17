@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// A character is a collection of 4 parts that can be switched out. Each part has X number of sprites that can be switched between.
@@ -14,6 +16,9 @@ public class Character : MonoBehaviour
     public KeyCode SwitchC;
     public KeyCode SwitchD;
     public KeyCode SwitchCamera;
+
+    [Tooltip("The joystick number is 1-based")]
+    public int JoystickNum = 1;
 
     [Header("Character parts")] public Sprite[] PartA;
     public Sprite[] PartB;
@@ -44,10 +49,16 @@ public class Character : MonoBehaviour
     private float _followerMultiplier = 0.1f;
     private float _secondsBetweenFollowerUpdates = 0.1f;
 
+    private int _changeIndex = -1;
+
 
     public int Combination => _indexes[0] * 1000 + _indexes[1] * 100 + _indexes[2] * 10 + _indexes[3]; // will make a number like 1234
 
     public int Score { get; set; } = 0;
+
+    private Sprite[][] _parts;
+
+    public Sprite[][] Parts => _parts ??= new[] {PartA, PartB, PartC, PartD}; // lazy load this
 
     private void Start()
     {
@@ -80,23 +91,31 @@ public class Character : MonoBehaviour
             Score += Mathf.RoundToInt(Random.Range(0, 10) * _followerMultiplier);
         }
 
-        if ((Input.GetKeyDown(SwitchA) || Input.GetKeyDown(SwitchB) || Input.GetKeyDown(SwitchC) ||
-             Input.GetKeyDown(SwitchD) || (Input.GetKeyDown(SwitchCamera) && Application.isEditor)) == false)
-            return; // early return if no key was pressed
+        int previousIndex = _changeIndex;
+        // if keyboard W, if controller Y or if controller stick up
+        if (Input.GetKeyDown(SwitchA) || Input.GetKeyDown($"joystick {JoystickNum} button 3") || Input.GetAxis($"Vertical{JoystickNum}") > 0.5f)
+            _changeIndex = 0;
+        else if (Input.GetKeyDown(SwitchB) || Input.GetKeyDown($"joystick {JoystickNum} button 2") || Input.GetAxis($"Horizontal{JoystickNum}") < -0.5f)
+            _changeIndex = 1;
+        else if (Input.GetKeyDown(SwitchC) || Input.GetKeyDown($"joystick {JoystickNum} button 1") || Input.GetAxis($"Horizontal{JoystickNum}") > 0.5f)
+            _changeIndex = 2;
+        else if (Input.GetKeyDown(SwitchD) || Input.GetKeyDown($"joystick {JoystickNum} button 0") || Input.GetAxis($"Vertical{JoystickNum}") < -0.5f)
+            _changeIndex = 3;
+        else if (Input.GetKeyDown(SwitchCamera) && Application.isEditor)
+            StartCoroutine(PlayCameraFlashes());
+        else
+        {
+            _changeIndex = -1;
+            return;
+        }
 
         if (!_gameManager || _gameManager.PlayingAnimation)
             return;
 
-        if (Input.GetKeyDown(SwitchA))
-            _indexes[0] = (_indexes[0] + 1) % PartA.Length;
-        if (Input.GetKeyDown(SwitchB))
-            _indexes[1] = (_indexes[1] + 1) % PartB.Length;
-        if (Input.GetKeyDown(SwitchC))
-            _indexes[2] = (_indexes[2] + 1) % PartC.Length;
-        if (Input.GetKeyDown(SwitchD))
-            _indexes[3] = (_indexes[3] + 1) % PartD.Length;
-        if (Input.GetKeyDown(SwitchCamera))
-            StartCoroutine(PlayCameraFlashes());
+        if (_changeIndex == previousIndex) // we need a -1 before we can change again
+            return;
+
+        _indexes[_changeIndex] = (_indexes[_changeIndex] + 1) % Parts[_changeIndex].Length;
 
         _audioSource.time = 0;
         _audioSource.Play();
