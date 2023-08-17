@@ -45,10 +45,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioLowPassFilter _lowpassFilter;
     public bool PlayingAnimation { get; set; } = false;
 
+    [SerializeField] private Image[] _controllerSprites; // these will be hidden if there is no controller connected
+
     // Start is called before the first frame update
     void Start()
     {
-        
         _parentVictory.SetActive(false);
 
         _audioSource = GetComponent<AudioSource>();
@@ -79,6 +80,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (!_gameStarted && Input.GetKeyDown("joystick button 0"))
+            StartGame();
+        if (_gameEnded && Input.GetKeyDown("joystick button 0"))
+            RestartGame();
+
+        bool controllerConnected = Input.GetJoystickNames().Length > 0;
+        foreach (Image image in _controllerSprites)
+            image.enabled = controllerConnected;
+
         if (Application.isEditor && Input.GetKeyDown(KeyCode.H))
             StartCoroutine(Win());
 
