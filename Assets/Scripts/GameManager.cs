@@ -166,6 +166,8 @@ public class GameManager : MonoBehaviour
         _parentVictory.SetActive(false);
 
         _gameStarted = true;
+        
+        Cursor.visible = false;
 
         Destroy(_lowpassFilter);
     }
@@ -198,6 +200,8 @@ public class GameManager : MonoBehaviour
         }
 
         _statText.text = statText;
+        
+        Cursor.visible = true;
 
         GameObject clone = mostScore.CreateClone();
         clone.transform.localScale = Vector3.one;
